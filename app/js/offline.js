@@ -5,11 +5,11 @@ export const LIB_FILES = ['transformers/transformers.min.js', 'transformers/ort-
   'piper/piper_phonemize.wasm', 'piper/piper_phonemize.data', 'tesseract/tesseract.min.js', 'tesseract/worker.min.js',
   'tesseract/core/tesseract-core-simd-lstm.wasm.js', 'tesseract/core/tesseract-core-lstm.wasm.js'].map(f => new URL('../lib/' + f, import.meta.url).href);
 export async function libStatus() {
-  try { const c = await caches.open('dolmetscher-v1-lib'); const have = new Set((await c.keys()).map(r => r.url)); return LIB_FILES.filter(f => !have.has(f)); }
+  try { const c = await caches.open('dolmetscher-lib'); const have = new Set((await c.keys()).map(r => r.url)); return LIB_FILES.filter(f => !have.has(f)); }
   catch { return LIB_FILES; }
 }
 export async function libCache() {
-  const c = await caches.open('dolmetscher-v1-lib');
+  const c = await caches.open('dolmetscher-lib');
   for (const f of await libStatus()) await c.add(f);
 }
 

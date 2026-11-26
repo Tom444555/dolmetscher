@@ -1,7 +1,8 @@
 // Offline-Speicher der App. Grundgerüst wird beim Installieren geladen,
 // die großen Rechen-Bausteine (lib/) und Stimmen beim ersten Gebrauch.
-const VERSION = 'dolmetscher-v1';
+const VERSION = 'dolmetscher-v1.1';
 const MODELLE = 'dolmetscher-modelle';
+const LIB = 'dolmetscher-lib'; // Rechenkerne – bleiben bei App-Updates erhalten
 const SHELL = ['./', 'index.html', 'css/app.css', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-180.png',
   'js/main.js', 'js/langs.js', 'js/store.js', 'js/engine.js', 'js/engine-worker.js', 'js/llm.js', 'js/tts.js', 'js/ocr.js', 'js/rec.js', 'js/phrases.js', 'js/offline.js'];
 
@@ -23,7 +24,7 @@ self.addEventListener('fetch', e => {
     return;
   }
   if (url.origin !== location.origin) return; // Modelle von Hugging Face verwaltet Transformers.js selbst
-  if (url.pathname.includes('/lib/')) { e.respondWith(cacheFirst(e, VERSION + '-lib')); return; }
+  if (url.pathname.includes('/lib/')) { e.respondWith(cacheFirst(e, LIB)); return; }
   // App-Dateien: erst Netz (für Updates), bei Funkstille aus dem Speicher
   e.respondWith(fetch(req).then(res => {
     if (res.ok) { const copy = res.clone(); e.waitUntil(caches.open(VERSION).then(c => c.put(req, copy))); }

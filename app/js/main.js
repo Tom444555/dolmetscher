@@ -9,7 +9,7 @@ import { PHRASES } from './phrases.js';
 import { llmTest } from './llm.js';
 import { libStatus, libCache } from './offline.js';
 
-export const VERSION = 'v1.0 · 26.11.2026';
+export const VERSION = 'v1.1 · 26.11.2026';
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -21,7 +21,10 @@ function toast(msg, ms = 2600) {
 }
 
 function fillLangSelect(sel, value) {
-  sel.innerHTML = Object.entries(LANGS).map(([k, l]) => `<option value="${k}">${l.flag} ${l.name}</option>`).join('');
+  // Deutsch und Englisch oben, Rest alphabetisch
+  const top = ['de', 'en'];
+  const rest = Object.keys(LANGS).filter(k => !top.includes(k)).sort((a, b) => LANGS[a].name.localeCompare(LANGS[b].name, 'de'));
+  sel.innerHTML = [...top, ...rest].map(k => `<option value="${k}">${LANGS[k].flag} ${LANGS[k].name}</option>`).join('');
   sel.value = value;
 }
 function setDir(el, lang) { el.dir = LANGS[lang]?.rtl ? 'rtl' : 'ltr'; }
@@ -526,8 +529,9 @@ async function renderPakete() {
   $('#pkWhisper').textContent = wOk ? 'Geladen ✓' : 'Laden'; $('#pkWhisper').disabled = wOk;
   const voices = await piperStored();
   const rows = [];
-  for (const [k, l] of Object.entries(LANGS)) {
-    if (k === 'de') continue;
+  const order = Object.keys(LANGS).filter(k => k !== 'de').sort((a, b) => a === 'en' ? -1 : b === 'en' ? 1 : LANGS[a].name.localeCompare(LANGS[b].name, 'de'));
+  for (const k of order) {
+    const l = LANGS[k];
     const ms = modelsFor(k);
     const trOk = ms.length && ms.every(m => hasModel(urls, m));
     const trPart = ms.filter(m => hasModel(urls, m)).length;
