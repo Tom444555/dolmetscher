@@ -1,0 +1,27 @@
+// Satzbuch: fertige deutsche Sätze nach Themen. Werden auf Antippen in die Zielsprache übersetzt
+// und danach auf dem Gerät gemerkt.
+export const PHRASES = {
+  'Grundlagen': ['Hallo!', 'Guten Morgen.', 'Guten Abend.', 'Auf Wiedersehen.', 'Bitte.', 'Danke schön.', 'Entschuldigung.', 'Ja.', 'Nein.',
+    'Ich verstehe das nicht.', 'Können Sie das bitte wiederholen?', 'Sprechen Sie bitte langsamer.', 'Sprechen Sie Deutsch oder Englisch?',
+    'Wie heißen Sie?', 'Ich heiße Tom.', 'Ich komme aus Deutschland.', 'Wie viel kostet das?', 'Wo ist die Toilette?'],
+  'Unterwegs': ['Wo ist der Bahnhof?', 'Wie komme ich zum Flughafen?', 'Ist es weit von hier?', 'Bitte bringen Sie mich zu dieser Adresse.',
+    'Wann fährt der nächste Bus?', 'Eine Fahrkarte nach …, bitte.', 'Wo kann ich parken?', 'Wo ist die nächste Tankstelle?',
+    'Links', 'Rechts', 'Geradeaus', 'Ich habe mich verlaufen.'],
+  'Hotel': ['Ich habe eine Reservierung.', 'Haben Sie ein Zimmer frei?', 'Für zwei Nächte, bitte.', 'Ist das Frühstück inklusive?',
+    'Wie lautet das WLAN-Passwort?', 'Die Heizung funktioniert nicht.', 'Um wie viel Uhr ist der Check-out?'],
+  'Essen & Trinken': ['Einen Tisch für zwei Personen, bitte.', 'Die Speisekarte, bitte.', 'Was empfehlen Sie?', 'Ich bin allergisch gegen Nüsse.',
+    'Ohne Fleisch, bitte.', 'Ein Wasser ohne Kohlensäure, bitte.', 'Ein Bier, bitte.', 'Es hat sehr gut geschmeckt.', 'Die Rechnung, bitte.',
+    'Kann ich mit Karte bezahlen?'],
+  'Einkaufen': ['Ich schaue mich nur um.', 'Haben Sie das in einer anderen Größe?', 'Das ist zu teuer.', 'Ich nehme es.', 'Haben Sie eine Tüte?',
+    'Wann haben Sie geöffnet?'],
+  'Notfall': ['Hilfe!', 'Rufen Sie bitte einen Krankenwagen.', 'Rufen Sie die Polizei.', 'Ich brauche einen Arzt.', 'Wo ist das nächste Krankenhaus?',
+    'Es gab einen Unfall.', 'Mein Portemonnaie wurde gestohlen.', 'Ich habe meinen Pass verloren.', 'Es brennt!'],
+  'Arzt & Apotheke': ['Mir ist schlecht.', 'Ich habe Fieber.', 'Ich habe Schmerzen hier.', 'Ich nehme diese Medikamente.', 'Wo ist die nächste Apotheke?',
+    'Haben Sie etwas gegen Kopfschmerzen?', 'Ich habe Diabetes.'],
+  'Baustelle & Arbeit': ['Guten Morgen, wir fangen um sieben Uhr an.', 'Bitte tragen Sie Ihren Helm.', 'Wo ist der Hauptwasserhahn?',
+    'Das Wasser muss abgestellt werden.', 'Wir brauchen noch Material.', 'Bitte das Rohr hier verlegen.', 'Achtung, hier wird geschweißt.',
+    'Wie lange dauert das noch?', 'Morgen machen wir weiter.', 'Feierabend für heute.', 'Haben Sie Fragen?', 'Bitte unterschreiben Sie hier.',
+    'Der Termin wird verschoben.', 'Bitte rufen Sie mich an.'],
+  'Zahlen & Zeit': ['eins, zwei, drei, vier, fünf', 'sechs, sieben, acht, neun, zehn', 'Wie spät ist es?', 'heute', 'morgen', 'gestern',
+    'Montag, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag, Sonntag'],
+};

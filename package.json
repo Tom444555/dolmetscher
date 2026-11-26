@@ -1,0 +1,20 @@
+{
+  "name": "dolmetscher",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@diffusionstudio/piper-wasm": "^1.0.0",
+    "@huggingface/transformers": "^3.8.1",
+    "@mintplex-labs/piper-tts-web": "^1.0.5",
+    "esbuild": "^0.28.2",
+    "tesseract.js": "^5.1.1",
+    "tesseract.js-core": "^5.1.1"
+  }
+}
