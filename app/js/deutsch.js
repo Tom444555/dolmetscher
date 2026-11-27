@@ -1,0 +1,88 @@
+// Deutsch-Regeln: Grundregeln, was sich geändert hat, häufige Fehler, Tipps für Lernende, Selbsttest.
+// Stand: Amtliches Regelwerk der deutschen Rechtschreibung 2024 (gültig seit 1.7.2024, Rat für deutsche Rechtschreibung).
+// Jeder Eintrag: t = Titel, x = Erklärung, b = Beispiele (richtig ✓ / falsch ✗)
+
+export const STAND = 'Stand: Amtliches Regelwerk 2024 des Rats für deutsche Rechtschreibung, gültig seit 1. Juli 2024 für Schule und Verwaltung.';
+
+export const KAPITEL = [
+  { titel: 'Grundregeln', icon: '📘', eintraege: [
+    { t: 'Großschreibung', x: 'Groß schreibt man: das erste Wort im Satz, alle Nomen (Dinge, Personen, Begriffe), Namen und die höfliche Anrede „Sie, Ihnen, Ihr“. Wörter werden auch groß, wenn sie als Nomen gebraucht werden („das Schweißen“, „beim Arbeiten“, „etwas Gutes“).',
+      b: ['✓ Das Rohr ist undicht.', '✓ Beim Bohren bitte die Brille tragen.', '✓ Können Sie mir helfen?', '✗ das rohr ist undicht.'] },
+    { t: 'Satzbau: Verb an Stelle 2', x: 'Im normalen Aussagesatz steht das gebeugte Verb immer an zweiter Stelle. Was davor steht, ist frei. Mehrteilige Verben bilden eine Klammer: Der zweite Teil kommt ans Ende.',
+      b: ['✓ Morgen fangen wir um sieben Uhr an.', '✓ Wir fangen morgen um sieben Uhr an.', '✓ Ich habe das Material bestellt.', '✗ Morgen wir fangen um sieben Uhr an.'] },
+    { t: 'Nebensatz: Verb ans Ende', x: 'Nach Wörtern wie „dass, weil, wenn, ob, als, obwohl, damit“ und nach „der/die/das“ (als Bezugswort) rutscht das gebeugte Verb ans Ende des Teilsatzes. Vor dem Nebensatz steht ein Komma.',
+      b: ['✓ Ich weiß, dass der Hahn tropft.', '✓ Wir warten, weil das Material fehlt.', '✓ Das ist der Kollege, der heute frei hat.', '✗ Ich weiß, dass der Hahn tropft nicht.'] },
+    { t: 'Fragen', x: 'Ja/Nein-Fragen beginnen mit dem Verb. W-Fragen beginnen mit dem Fragewort (wer, was, wo, wann, wie, warum, wie viel), danach kommt das Verb.',
+      b: ['✓ Hast du den Schlüssel?', '✓ Wann kommt der Kunde?', '✓ Wo ist der Absperrhahn?'] },
+    { t: 'Artikel: der, die, das', x: 'Jedes Nomen hat ein Geschlecht: männlich (der), weiblich (die), sächlich (das). In der Mehrzahl heißt es immer „die“. Den Artikel am besten immer mit dem Wort zusammen lernen. Faustregeln siehe „Tipps zum Deutschlernen“.',
+      b: ['der Hammer – die Zange – das Rohr', 'Mehrzahl: die Hämmer, die Zangen, die Rohre'] },
+    { t: 'Die vier Fälle', x: 'Artikel und Endungen ändern sich je nach Rolle im Satz. Fragen helfen: Nominativ – Wer oder was? Genitiv – Wessen? Dativ – Wem? Akkusativ – Wen oder was?',
+      b: ['Nominativ: Der Meister kommt.', 'Genitiv: Das Auto des Meisters steht draußen.', 'Dativ: Ich gebe dem Meister den Plan.', 'Akkusativ: Ich rufe den Meister an.'] },
+    { t: 's, ss oder ß', x: 'Nach einem kurzen Selbstlaut schreibt man ss, nach einem langen Selbstlaut oder nach ei, au, eu schreibt man ß. In der Schweiz und in Liechtenstein wird statt ß immer ss geschrieben.',
+      b: ['kurz: Fluss, muss, dass, Schloss, Wasser', 'lang: Fuß, Straße, groß, Maß, heißen', '✓ Ich muss los. ✗ Ich muß los. (alte Schreibung bis 1996)'] },
+    { t: 'Komma – das Wichtigste', x: 'Ein Komma steht: zwischen Hauptsatz und Nebensatz, bei Aufzählungen ohne „und/oder“, vor „aber, sondern, doch“, bei Anreden und Ausrufen, und vor Grundform-Gruppen mit „um, ohne, statt, anstatt, außer, als“. Zusätze werden vorn und hinten durch Komma eingeschlossen.',
+      b: ['✓ Wir brauchen Muffen, Bögen und Dichtungen.', '✓ Er kam spät, aber er kam.', '✓ Er ging, ohne sich zu verabschieden.', '✓ Am Freitag, den 25. September, feiern sie Silberhochzeit.'] },
+    { t: 'Doppelpunkt', x: 'Nach dem Doppelpunkt schreibt man groß, wenn ein ganzer Satz folgt. Folgt nur ein Wort oder eine Aufzählung, schreibt man klein (Nomen natürlich trotzdem groß).',
+      b: ['✓ Haus und Hof, Gut und Geld: Alles ist verloren.', '✓ Mitbringen: festes Schuhwerk und Helm.'] },
+    { t: 'Getrennt oder zusammen', x: 'Zwei Verben schreibt man meist getrennt („spazieren gehen“). Bei „kennenlernen“ und „kennen lernen“ ist beides erlaubt. Mischfarben schreibt man zusammen, zwei getrennte Farben mit Bindestrich.',
+      b: ['✓ ein blaugraues Hemd (Mischfarbe)', '✓ ein blau-grau gestreiftes Hemd (zwei Farben)', '✓ Rad fahren, Auto fahren', '✓ pleitegehen, bankrottgehen'] },
+    { t: 'Apostroph (Auslassungszeichen)', x: 'Für das Besitz-s braucht man im Deutschen normalerweise keinen Apostroph. Erlaubt ist er nur bei Namen von Geschäften, Lokalen u. Ä. Für die Mehrzahl nie.',
+      b: ['✓ Evas Mutter ✗ Eva’s Mutter', '✓ Eva’s Blumenladen oder Evas Blumenladen (Geschäftsname)', '✗ Auto’s, Pizza’s – ✓ Autos, Pizzas'] },
+    { t: 'Zahlen, Datum, Uhrzeit, Geld', x: 'Datum: Tag.Monat.Jahr. Uhrzeit mit Doppelpunkt oder Punkt. Dezimalzahlen mit Komma, große Zahlen mit Punkt oder Leerzeichen in Dreiergruppen. Das Euro-Zeichen steht im Deutschen hinter der Zahl. Empfehlung: Zahlen bis zwölf im Fließtext als Wort.',
+      b: ['27.11.2026 oder 27. November 2026', '7:30 Uhr oder 7.30 Uhr', '3,5 m – 12.500 € oder 12 500 €', 'drei Rohre, aber: 15 Rohre'] },
+    { t: 'Sie oder du', x: '„Sie“ (groß) ist die höfliche Anrede für Kunden, Fremde und Vorgesetzte. „Du“ unter Kollegen, Freunden, in der Familie und mit Kindern. Im Brief darf man „du, dein, euch“ klein oder groß schreiben, „Sie, Ihr“ immer groß.',
+      b: ['✓ Guten Tag, können Sie mir sagen, wo …', '✓ Hallo Tom, hast du/Du morgen Zeit?'] },
+  ]},
+  { titel: 'Was sich geändert hat', icon: '🕰️', eintraege: [
+    { t: '1901 – eine Rechtschreibung für alle', x: 'Bis dahin schrieb jedes Land und fast jede Schule ein wenig anders. Mit der Zweiten Orthographischen Konferenz 1901 bekam der deutsche Sprachraum eine gemeinsame Rechtschreibung. Der Duden wurde danach jahrzehntelang zum Maßstab.',
+      b: ['alt: Thür, Thal, Thau → ab 1901: Tür, Tal, Tau'] },
+    { t: '1996 – die große Rechtschreibreform', x: 'Deutschland, Österreich, die Schweiz und weitere Länder beschlossen 1996 eine Reform; in Deutschland galt sie ab August 1998, mit Übergangszeit. Wichtigste Änderung: ss nach kurzem Selbstlaut. Außerdem: Wörter richten sich nach ihrer Wortfamilie, drei gleiche Buchstaben bleiben stehen, mehr Getrenntschreibung, weniger Kommapflicht.',
+      b: ['daß → dass, muß → muss, Fluß → Fluss', 'numerieren → nummerieren (von Nummer)', 'Stengel → Stängel (von Stange)', 'Schiffahrt → Schifffahrt', 'radfahren → Rad fahren'] },
+    { t: '2004 – Rat für deutsche Rechtschreibung', x: 'Nach viel Streit um die Reform wurde 2004 der Rat für deutsche Rechtschreibung gegründet (Sitz in Mannheim). Er beobachtet seitdem, wie wirklich geschrieben wird, und passt das amtliche Regelwerk an.', b: [] },
+    { t: '2006 – die „Reform der Reform“', x: 'Umstrittene Punkte wurden zurückgenommen oder es wurden wieder beide Schreibweisen erlaubt. Seit 1. August 2006 gilt dieser Kompromiss in den Schulen.',
+      b: ['kennenlernen und kennen lernen – beides richtig', 'Biografie und Biographie – beides richtig', 'Pleite gehen → pleitegehen', 'du/dein im Brief wieder auch groß erlaubt', 'Komma vor „um … zu“, „ohne … zu“ wieder Pflicht'] },
+    { t: '2017 – das große ẞ', x: 'Seit 29. Juni 2017 gibt es das „ß“ amtlich auch als Großbuchstaben (ẞ). Es ist erlaubt, aber nicht Pflicht: Bei Großschreibung darf weiter SS stehen. Dazu: Adjektive in festen Begriffen dürfen groß geschrieben werden, und kaum benutzte eingedeutschte Formen wurden gestrichen.',
+      b: ['STRAẞE oder STRASSE – beides richtig', 'die Goldene Hochzeit, das Neue Jahr (groß erlaubt)', 'gestrichen: Ketschup, Majonäse → nur noch Ketchup, Mayonnaise'] },
+    { t: '2024 – das aktuelle Regelwerk', x: 'Seit 1. Juli 2024 gilt ein überarbeitetes Regelwerk mit neuem Wörterverzeichnis für Schule und Verwaltung. Eingedeutschte Formen, die kaum jemand nutzt, wurden gestrichen; einige fremdsprachige Formen wurden aufgenommen. Englische Verben werden deutsch gebeugt. Dazu kleinere Regeln zu Komma, Doppelpunkt, Apostroph und Farbwörtern (siehe Grundregeln).',
+      b: ['gestrichen u. a.: Jogurt, Spagetti, Tunfisch, Panter, Polonäse, Exposee, Kusine → nur noch Joghurt, Spaghetti, Thunfisch, Panther …', 'neu erlaubt u. a.: Couvert, Façon, Portrait', 'englische Verben: sie jobbt, er likt', '„guten Tag sagen“ und „Guten Tag sagen“ – beides richtig'] },
+    { t: 'Gendern – wie ist der Stand?', x: 'Der Rat für deutsche Rechtschreibung hat 2024 festgestellt: Zeichen im Wortinneren wie Gender-Stern (*), Doppelpunkt (:) oder Unterstrich (_) gehören nicht zum Kernbestand der deutschen Rechtschreibung. Er beobachtet die Entwicklung weiter. Für Schulen und Behörden gilt das amtliche Regelwerk; manche Bundesländer haben dazu eigene Vorgaben. Unstrittig richtig sind Paarformen und neutrale Wörter.',
+      b: ['✓ Kolleginnen und Kollegen', '✓ Mitarbeitende, Lehrkräfte, das Team', 'nicht im Regelwerk: Kolleg*innen, Kolleg:innen, Kolleg_innen'] },
+    { t: 'Sprache im Alltag verändert sich', x: 'Neben den amtlichen Regeln ändert sich die gesprochene Sprache laufend: Viele englische Wörter sind dazugekommen (Meeting, Team, checken, downloaden). Der Genitiv wird im Alltag oft durch den Dativ ersetzt – in der Schriftsprache gilt aber weiter der Genitiv. Neue Wörter nimmt der Duden auf, wenn sie oft genug geschrieben werden.',
+      b: ['Schriftsprache: wegen des Regens – Alltag: wegen dem Regen', 'downloaden: ich downloade, ich habe downgeloadet', 'neu im Duden 2024 u. a.: Klimakleber, Fleischersatz'] },
+  ]},
+  { titel: 'Häufige Fehler', icon: '⚠️', eintraege: [
+    { t: 'das oder dass', x: '„dass“ (mit ss) leitet einen Nebensatz ein und lässt sich nicht durch „dieses/welches“ ersetzen. „das“ ist Artikel oder Bezugswort – dann passt „dieses“ oder „welches“.', b: ['✓ Ich hoffe, dass es klappt.', '✓ Das Rohr, das (welches) leckt …'] },
+    { t: 'seit oder seid', x: '„seit“ = Zeit (seit Montag). „seid“ = Form von „sein“ (ihr seid).', b: ['✓ Seit gestern läuft die Pumpe.', '✓ Ihr seid pünktlich.'] },
+    { t: 'wieder oder wider', x: '„wieder“ = noch einmal. „wider“ = gegen.', b: ['✓ Er kommt morgen wieder.', '✓ widersprechen, Widerstand, widerrufen'] },
+    { t: 'Standard, nicht Standart', x: 'Das Wort endet auf -d, auch wenn man es mit t spricht.', b: ['✓ Standard ✗ Standart', '✓ Standardausführung'] },
+    { t: 'Rhythmus, Reparatur, Maschine', x: 'Wörter, die oft falsch geschrieben werden.', b: ['✓ Rhythmus ✓ Reparatur ✓ Maschine ✓ Dichtung ✓ Akkuschrauber ✓ Rechnung', '✗ Rytmus ✗ Reperatur ✗ Machine'] },
+    { t: 'tot oder tod', x: '„tot“ (mit t) ist das Eigenschaftswort, „der Tod“ (mit d) das Nomen.', b: ['✓ Die Batterie ist tot.', '✓ todmüde, Todesangst'] },
+    { t: 'Leerzeichen bei Zusammensetzungen', x: 'Zusammengesetzte Nomen schreibt man zusammen oder mit Bindestrich, nie mit Leerzeichen.', b: ['✓ Wasserzähler, Wasser-Zähler ✗ Wasser Zähler', '✓ Kunden-Nummer / Kundennummer'] },
+    { t: 'Mehrzahl mit Apostroph', x: 'Für die Mehrzahl gibt es nie einen Apostroph.', b: ['✗ Rohr’s, Auto’s ✓ Rohre, Autos'] },
+  ]},
+  { titel: 'Tipps zum Deutschlernen', icon: '💡', eintraege: [
+    { t: 'Den Artikel erkennen', x: 'Viele Wortendungen verraten den Artikel. Ausnahmen gibt es, aber die Faustregeln stimmen meistens.',
+      b: ['die: -ung, -heit, -keit, -schaft, -ion, -tät (die Lieferung, die Sicherheit)', 'das: -chen, -lein, -ment, -um und viele Wörter mit Ge- (das Mädchen, das Instrument, das Zentrum, das Gebäude, das Werkzeug)', 'der: -er bei Geräten und Berufen, -ling, -ismus (der Bohrer, der Lehrling)'] },
+    { t: 'Trennbare Verben', x: 'Bei Verben wie „anrufen, aufmachen, einbauen, abstellen“ steht die Vorsilbe im Satz am Ende.',
+      b: ['anrufen: Ich rufe dich morgen an.', 'abstellen: Stell bitte das Wasser ab.', 'einbauen: Wir bauen das WC morgen ein.'] },
+    { t: 'Vergangenheit im Gespräch', x: 'Im Gespräch nimmt man meistens das Perfekt: „haben“ oder „sein“ + Partizip am Ende. „sein“ bei Bewegung und Veränderung (gehen, fahren, kommen, werden).',
+      b: ['Ich habe gearbeitet.', 'Wir sind nach Hause gefahren.', 'Das Rohr ist geplatzt.'] },
+    { t: 'Höflich bitten', x: 'Mit „bitte“, „könnten Sie …“ oder „würden Sie …“ klingt jede Bitte freundlich.',
+      b: ['Könnten Sie bitte kurz warten?', 'Würden Sie mir das zeigen?', 'Ich hätte gern …'] },
+    { t: 'Zahlen sprechen', x: 'Bei Zahlen von 21 bis 99 sagt man zuerst die Einer, dann die Zehner.', b: ['24 = vierundzwanzig', '1.250 = (ein)tausendzweihundertfünfzig', '0,5 = null Komma fünf'] },
+  ]},
+];
+
+// Selbsttest: q = Frage, a = Antworten, r = Index der richtigen, e = Erklärung
+export const TEST = [
+  { q: 'Welche Schreibung ist heute richtig?', a: ['Ich muß los.', 'Ich muss los.'], r: 1, e: 'Seit der Reform 1996: ss nach kurzem Selbstlaut.' },
+  { q: 'Welches Wort ist richtig?', a: ['Ich hoffe, das es klappt.', 'Ich hoffe, dass es klappt.'], r: 1, e: '„dass“ leitet den Nebensatz ein – „dieses/welches“ passt hier nicht.' },
+  { q: 'Wo steht das Verb?', a: ['Morgen wir fahren nach Saarbrücken.', 'Morgen fahren wir nach Saarbrücken.'], r: 1, e: 'Im Aussagesatz steht das Verb an zweiter Stelle.' },
+  { q: 'Welche Schreibung ist seit 2024 die einzig amtliche?', a: ['Spagetti', 'Spaghetti'], r: 1, e: 'Die eingedeutschte Form „Spagetti“ wurde 2024 gestrichen.' },
+  { q: 'Darf man STRAẞE mit großem ẞ schreiben?', a: ['Ja, seit 2017 – STRASSE geht auch.', 'Nein, nur STRASSE.'], r: 0, e: 'Das große ẞ ist seit 2017 erlaubt, aber keine Pflicht.' },
+  { q: 'Ein Hemd in einer Mischfarbe aus Blau und Grau ist …', a: ['blau-grau', 'blaugrau'], r: 1, e: 'Mischfarben zusammen, zwei getrennte Farben mit Bindestrich (Regelwerk 2024).' },
+  { q: 'Was ist richtig?', a: ['Evas Mutter', 'Eva’s Mutter'], r: 0, e: 'Apostroph nur bei Namen von Geschäften u. Ä., nicht beim normalen Besitz-s.' },
+  { q: 'Welcher Artikel? „___ Lieferung“', a: ['der', 'die', 'das'], r: 1, e: 'Wörter auf -ung sind weiblich: die Lieferung.' },
+  { q: 'Komma richtig?', a: ['Er ging ohne sich zu verabschieden.', 'Er ging, ohne sich zu verabschieden.'], r: 1, e: 'Vor „ohne … zu“, „um … zu“ usw. steht ein Komma (seit 2006 Pflicht).' },
+  { q: 'Gehört der Gender-Stern (Kolleg*innen) zum amtlichen Regelwerk?', a: ['Ja', 'Nein'], r: 1, e: 'Laut Rat für deutsche Rechtschreibung (2024) nicht zum Kernbestand.' },
+];

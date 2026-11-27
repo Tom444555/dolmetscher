@@ -123,7 +123,7 @@
 
   <!-- LERNEN -->
   <section class="view" id="v-lernen">
-    <div class="seg" id="lSeg"><button data-l="satzbuch" class="on">Satzbuch</button><button data-l="vokabeln">Vokabeln</button><button data-l="aussprache">Aussprache</button></div>
+    <div class="seg" id="lSeg"><button data-l="satzbuch" class="on">Satzbuch</button><button data-l="vokabeln">Vokabeln</button><button data-l="aussprache">Aussprache</button><button data-l="deutsch">Deutsch</button></div>
     <div id="l-satzbuch">
       <div class="tools"><span class="hint grow">Sätze auf Deutsch – antippen für die Übersetzung nach</span><select class="langsel" id="sbNach" style="width:auto"></select></div>
       <div id="sbListe"></div>
@@ -133,6 +133,15 @@
       <div class="listtitle">Alle Karten</div>
       <div class="list" id="vkListe"></div>
       <p class="hint small">Karten entstehen, wenn du eine Übersetzung mit ★ merkst. Gewusste Karten kommen seltener dran (5 Fächer).</p>
+    </div>
+    <div id="l-deutsch" class="hidden">
+      <div class="card"><h3>Regeln der deutschen Sprache</h3>
+        <p class="hint small" id="dStand"></p>
+        <div class="tools"><span class="hint small grow">Erklärung übersetzen in:</span><select class="langsel" id="dSprache" style="width:auto"></select></div>
+        <input class="feld" id="dSuche" placeholder="Suchen, z. B. Komma, ß, dass …">
+      </div>
+      <div id="dListe"></div>
+      <div class="card"><h3>Selbsttest</h3><div id="dTest"></div></div>
     </div>
     <div id="l-aussprache" class="hidden">
       <div class="card">

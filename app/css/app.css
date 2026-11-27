@@ -179,3 +179,13 @@ textarea.src, .out { font-size: calc(22px * var(--fs)); }
 .zeigen.flip .zeigen-text { transform: rotate(180deg); }
 .seg button { min-width: 0; }
 .offline-ok { color: var(--green); }
+
+/* v1.3 Deutsch-Regeln */
+.regel { cursor: default; }
+.regel-x { margin: 4px 0; line-height: 1.45; }
+.regel-b { margin: 4px 0 6px; padding-left: 20px; color: var(--sub); }
+.regel-b li { margin: 2px 0; }
+.regel-b li.w-no2 { color: var(--red); }
+.regel-tr { margin-top: 6px; padding: 8px 10px; border-radius: 10px; background: var(--card2); }
+.test-a.ok { background: color-mix(in srgb, var(--green) 18%, transparent); }
+.test-a.no { background: color-mix(in srgb, var(--red) 15%, transparent); }

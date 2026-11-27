@@ -1,4 +1,9 @@
-# Übergabe – Stand 27.11.2026 (v1.2)
+# Übergabe – Stand 27.11.2026 (v1.3)
+
+## Neu in v1.3
+- Lernen › Deutsch (`app/js/deutsch.js`): Grundregeln (13), „Was sich geändert hat“ 1901–2024 inkl. Gendern-Stand (8), häufige Fehler (8), Tipps zum Deutschlernen (5), Selbsttest (10 Fragen); Suche, Vorlesen, Übersetzen jeder Erklärung
+- Quellen: Rat für deutsche Rechtschreibung (Regelwerk 2024, Überblick der Änderungen, Pressemitteilungen 2017/2024). Bei neuen Ratsbeschlüssen `STAND` und Kapitel „Was sich geändert hat“ anpassen
+
 
 ## Neu in v1.2 (alles im Browser getestet, `tools/test_v12.py`)
 - Stabilität: höchstens 3 Übersetzungsmodelle im Arbeitsspeicher (rechnende werden nie freigegeben), ein beim ersten Tippen freigeschalteter Abspieler (iOS), Spracherkennung wechselt mitten im Erkennen vom Grafikchip auf CPU, abgestürzter Rechen-Arbeiter startet neu

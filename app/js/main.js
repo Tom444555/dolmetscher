@@ -7,10 +7,11 @@ import { speak, stop as stopSpeak, piperDownload, piperStored, piperRemove, unlo
 import { recognize, downloadLang as ocrDownload, hasLang as ocrHas, removeLang as ocrRemove } from './ocr.js';
 import { Recorder, LiveRecorder, decodeFile } from './rec.js';
 import { PHRASES } from './phrases.js';
+import { KAPITEL, TEST, STAND } from './deutsch.js';
 import { llmTest } from './llm.js';
 import { libStatus, libCache } from './offline.js';
 
-export const VERSION = 'v1.2 · 27.11.2026';
+export const VERSION = 'v1.3 · 27.11.2026';
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -504,7 +505,8 @@ $('#sbNach').onchange = () => renderSatzbuch();
 fillLangSelect($('#apSprache'), S.nach === 'de' ? 'en' : S.nach);
 
 function renderLernen() {
-  for (const t of ['satzbuch', 'vokabeln', 'aussprache']) $('#l-' + t).classList.toggle('hidden', t !== lTab);
+  for (const t of ['satzbuch', 'vokabeln', 'aussprache', 'deutsch']) $('#l-' + t).classList.toggle('hidden', t !== lTab);
+  if (lTab === 'deutsch') renderDeutsch();
   if (lTab === 'satzbuch') renderSatzbuch();
   if (lTab === 'vokabeln') renderVokabeln();
   if (lTab === 'aussprache' && !$('#apText').value) neuerSatz();
@@ -556,6 +558,50 @@ function drawCard() {
   $('#vkFlip').onclick = flip; $('#vkZeig') && ($('#vkZeig').onclick = flip);
   $('#vkJa') && ($('#vkJa').onclick = () => { vocab.answer(c.i, true); renderVokabeln(); });
   $('#vkNein') && ($('#vkNein').onclick = () => { vocab.answer(c.i, false); renderVokabeln(); });
+}
+
+// Deutsch-Regeln
+$('#dStand').textContent = STAND;
+fillLangSelect($('#dSprache'), S.nach === 'de' ? 'en' : S.nach);
+$('#dSuche').addEventListener('input', () => renderDeutsch());
+const dOffen = new Set();
+function renderDeutsch() {
+  const q = $('#dSuche').value.trim().toLowerCase();
+  const fit = e => !q || (e.t + ' ' + e.x + ' ' + e.b.join(' ')).toLowerCase().includes(q);
+  $('#dListe').innerHTML = KAPITEL.map((k, ki) => {
+    const es = k.eintraege.map((e, ei) => ({ e, id: ki + '-' + ei })).filter(o => fit(o.e));
+    if (!es.length) return '';
+    return `<details class="cat" data-k="${ki}" ${q || dOffen.has(ki) ? 'open' : ''}><summary><span>${k.icon} ${esc(k.titel)}</span><span class="hint small">${es.length} ›</span></summary>
+      ${es.map(({ e, id }) => `<div class="phrase regel" data-id="${id}"><b>${esc(e.t)}</b><div class="regel-x">${esc(e.x)}</div>
+        ${e.b.length ? `<ul class="regel-b">${e.b.map(x => `<li class="${x.startsWith('✗') ? 'w-no2' : ''}">${esc(x)}</li>`).join('')}</ul>` : ''}
+        <div class="tools"><button class="btn sec small" data-dvor="${id}">🔊 Vorlesen</button><button class="btn sec small" data-dtr="${id}">Übersetzen</button></div>
+        <div class="regel-tr hidden"></div></div>`).join('')}</details>`;
+  }).join('') || '<div class="card hint">Nichts gefunden.</div>';
+  $$('#dListe details').forEach(d => d.addEventListener('toggle', () => { d.open ? dOffen.add(+d.dataset.k) : dOffen.delete(+d.dataset.k); }));
+  const get = id => { const [k, e] = id.split('-').map(Number); return KAPITEL[k].eintraege[e]; };
+  $$('#dListe [data-dvor]').forEach(b => b.onclick = () => { const e = get(b.dataset.dvor); speak(e.t + '. ' + e.x, 'de').catch(err => toast(err.message)); });
+  $$('#dListe [data-dtr]').forEach(b => b.onclick = async () => {
+    const e = get(b.dataset.dtr), box = b.closest('.regel').querySelector('.regel-tr'), lang = $('#dSprache').value;
+    if (lang === 'de') return toast('Bitte oben eine andere Sprache wählen.');
+    box.classList.remove('hidden'); box.textContent = 'Übersetze …'; setDir(box, lang);
+    try { box.textContent = await translate(e.t + '. ' + e.x, 'de', lang); } catch (err) { box.textContent = err.message; }
+  });
+  renderTest();
+}
+let tIdx = 0, tPunkte = 0, tAntwort = null;
+function renderTest() {
+  const box = $('#dTest');
+  if (tIdx >= TEST.length) {
+    box.innerHTML = `<div class="score">${tPunkte} / ${TEST.length}</div><p style="text-align:center">${tPunkte >= 9 ? 'Super – fast alles richtig!' : tPunkte >= 6 ? 'Gut gemacht!' : 'Schau dir die Regeln oben noch einmal an.'}</p><div class="tools" style="justify-content:center"><button class="btn" id="tNeu">Nochmal</button></div>`;
+    $('#tNeu').onclick = () => { tIdx = 0; tPunkte = 0; tAntwort = null; renderTest(); };
+    return;
+  }
+  const f = TEST[tIdx];
+  box.innerHTML = `<p class="hint small">Frage ${tIdx + 1} von ${TEST.length}</p><p><b>${esc(f.q)}</b></p>
+    ${f.a.map((a, i) => `<button class="item test-a ${tAntwort === null ? '' : i === f.r ? 'ok' : i === tAntwort ? 'no' : ''}" data-a="${i}" style="border:1px solid var(--line);border-radius:12px;margin:6px 0">${esc(a)}</button>`).join('')}
+    ${tAntwort === null ? '' : `<p class="${tAntwort === f.r ? 'w-ok' : 'w-no'}">${tAntwort === f.r ? 'Richtig!' : 'Leider falsch.'}</p><p class="hint">${esc(f.e)}</p><button class="btn" id="tWeiter">Weiter</button>`}`;
+  if (tAntwort === null) $$('#dTest [data-a]').forEach(b => b.onclick = () => { tAntwort = +b.dataset.a; if (tAntwort === f.r) tPunkte++; renderTest(); });
+  else $('#tWeiter').onclick = () => { tIdx++; tAntwort = null; renderTest(); };
 }
 
 // Aussprache-Training
@@ -862,6 +908,8 @@ function renderHilfe() {
   • <b>PDF</b> über das Datei-Symbol, auch eingescannte Seiten.<br>
   • ✓ in der Sprachauswahl = liegt schon offline auf dem Gerät.<br>
   • <b>Großes Sprachmodell</b> (NLLB, ca. 900 MB) unter Sprachpakete – besser und ohne Umweg über Englisch.</p>
+  <h3>Neu in v1.3</h3>
+  <p>• <b>Lernen › Deutsch</b>: Grundregeln der deutschen Sprache, was sich seit 1901 geändert hat (Reformen 1996, 2006, 2017, 2024), häufige Fehler, Tipps zum Deutschlernen und ein Selbsttest. Jede Erklärung lässt sich vorlesen und in eine andere Sprache übersetzen – praktisch für Kollegen, die Deutsch lernen.</p>
   <h3>Kurzbefehl / Siri</h3>
   <p>In der App „Kurzbefehle“: Aktion <b>„Nach Eingabe fragen“</b>, dann <b>„URL öffnen“</b> mit<br>
   <code>https://tom444555.github.io/dolmetscher/#uebersetzen?nach=en&amp;vorlesen=1&amp;text=</code> und dahinter die Eingabe.<br>

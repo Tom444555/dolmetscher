@@ -111,6 +111,18 @@ try:
         check('Live-Untertitel schreibt mit und übersetzt', True, pg.inner_text('#uListe')[:200])
         pg.screenshot(path='/tmp/v12_unt.png')
 
+        # Deutsch-Regeln (v1.3)
+        pg.click('#tabs button[data-v="lernen"]'); pg.click('#lSeg button[data-l="deutsch"]'); pg.wait_for_timeout(300)
+        check('Deutsch-Regeln: Kapitel da', pg.locator('#dListe details').count() == 4, pg.locator('#dListe details').count())
+        pg.fill('#dSuche', 'Spaghetti'); pg.wait_for_timeout(200)
+        check('Deutsch-Regeln: Suche', 'Spaghetti' in pg.inner_text('#dListe') and pg.locator('#dListe .regel').count() <= 3, pg.locator('#dListe .regel').count())
+        pg.select_option('#dSprache', 'en'); pg.click('#dListe [data-dtr]')
+        pg.wait_for_function("document.querySelector('#dListe .regel-tr') && !/Übersetze/.test(document.querySelector('#dListe .regel-tr').textContent) && document.querySelector('#dListe .regel-tr').textContent.length > 20", timeout=180000)
+        check('Deutsch-Regeln: Erklärung übersetzt', True, pg.inner_text('#dListe .regel-tr')[:120])
+        pg.fill('#dSuche', ''); pg.click('#dTest [data-a="1"]')
+        check('Selbsttest wertet aus', 'Richtig' in pg.inner_text('#dTest'))
+        pg.screenshot(path='/tmp/v13_deutsch.png', full_page=True)
+
         # Sicherung
         bk = pg.evaluate("async () => (await import('./js/store.js')).backup()")
         check('Sicherung enthält Fachwörter', any(e['de'] == 'Absperrhahn' for e in bk['daten']['g']))
