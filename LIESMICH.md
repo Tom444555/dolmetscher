@@ -11,6 +11,7 @@
 - **Verlauf & Gemerkt**, Kopieren, Teilen
 - **Sprachpakete**: 33 Sprachen einzeln laden und löschen, mit Speicheranzeige
 - **Lokales Modell** (Schalter): am Mac über LM Studio mit TranslateGemma für bessere Qualität
+- **Fachwörterbuch**, **Rückübersetzung**, **Groß zeigen**, **Gespräch mit einem Knopf**, **Live-Untertitel**, **PDF**, **Kurzbefehl-Link**, **großes Sprachmodell NLLB** (v1.2)
 
 ## Einrichten (einmalig)
 1. Seite in Safari öffnen → Teilen → **Zum Home-Bildschirm**
@@ -32,4 +33,5 @@ Die Rechenkerne liegen in `app/lib/` (rund 60 MB), die Modelle werden beim erste
 ```
 python3 tools/test.py      # Übersetzen, Stimme, Whisper, Foto-Text, alles auch offline
 python3 tools/test_ui.py   # Bedienung mit künstlichem Mikrofon
+python3 tools/test_v12.py  # Neuerungen v1.2
 ```

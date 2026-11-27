@@ -3,7 +3,7 @@
 # Danach: Dateinamen der Piper-Teile in app/js/main.js (LIB_FILES) und app/sw.js prüfen!
 set -e
 cd "$(dirname "$0")/.."
-npm i --ignore-scripts @huggingface/transformers@3 tesseract.js@5 tesseract.js-core@5 @mintplex-labs/piper-tts-web @diffusionstudio/piper-wasm@1.0.0 esbuild
+npm i --ignore-scripts pdfjs-dist@4 @huggingface/transformers@3 tesseract.js@5 tesseract.js-core@5 @mintplex-labs/piper-tts-web @diffusionstudio/piper-wasm@1.0.0 esbuild
 npm rebuild esbuild
 rm -rf app/lib && mkdir -p app/lib/{transformers,tesseract/core,piper/ort}
 T=node_modules/@huggingface/transformers/dist
@@ -14,4 +14,5 @@ npx esbuild tools/piper-entry.js --bundle --format=esm --minify --outdir=app/lib
   --external:path --external:fs --external:url --external:module --external:worker_threads --platform=browser
 cp node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.{wasm,mjs} app/lib/piper/ort/
 cp node_modules/@diffusionstudio/piper-wasm/build/piper_phonemize.{wasm,data} app/lib/piper/
+mkdir -p app/lib/pdf && cp node_modules/pdfjs-dist/legacy/build/pdf{,.worker}.min.mjs app/lib/pdf/
 ls app/lib/piper

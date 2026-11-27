@@ -58,3 +58,42 @@ export async function decodeFile(file) {
   ctx.close();
   return out;
 }
+
+// Dauer-Aufnahme für Live-Untertitel: schneidet bei Sprechpausen (0,7 s) oder spätestens nach 12 s
+// ein Stück ab und gibt es als 16-kHz-Audio an onSegment weiter.
+export class LiveRecorder {
+  constructor({ onSegment, onLevel }) { this.onSegment = onSegment; this.onLevel = onLevel; }
+  async start() {
+    this.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, channelCount: 1 } });
+    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const src = this.ctx.createMediaStreamSource(this.stream);
+    const proc = this.ctx.createScriptProcessor(4096, 1, 1);
+    const rate = this.ctx.sampleRate;
+    let buf = [], len = 0, voiced = 0, silence = 0, pre = [];
+    proc.onaudioprocess = e => {
+      const d = new Float32Array(e.inputBuffer.getChannelData(0));
+      let sum = 0; for (let i = 0; i < d.length; i++) sum += d[i] * d[i];
+      const rms = Math.sqrt(sum / d.length);
+      this.onLevel && this.onLevel(Math.min(1, rms * 8));
+      const dur = d.length / rate;
+      if (rms > 0.02) { if (!voiced) { buf = [...pre]; len = pre.reduce((a, b) => a + b.length, 0); } voiced += dur; silence = 0; }
+      else if (voiced) silence += dur;
+      if (voiced) { buf.push(d); len += d.length; }
+      else { pre.push(d); if (pre.length > 3) pre.shift(); } // etwas Vorlauf behalten, damit der Wortanfang nicht fehlt
+      if (voiced && (silence > 0.7 || len / rate > 12)) {
+        if (voiced > 0.35) {
+          const all = new Float32Array(len); let o = 0; for (const b of buf) { all.set(b, o); o += b.length; }
+          this.onSegment(resample(all, rate, 16000));
+        }
+        buf = []; len = 0; voiced = 0; silence = 0; pre = [];
+      }
+    };
+    src.connect(proc); proc.connect(this.ctx.destination);
+    this.proc = proc; this.src = src;
+  }
+  async stop() {
+    try { this.proc.disconnect(); this.src.disconnect(); } catch {}
+    this.stream && this.stream.getTracks().forEach(t => t.stop());
+    try { await this.ctx.close(); } catch {}
+  }
+}

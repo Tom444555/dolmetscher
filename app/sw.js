@@ -1,10 +1,10 @@
 // Offline-Speicher der App. Grundgerüst wird beim Installieren geladen,
 // die großen Rechen-Bausteine (lib/) und Stimmen beim ersten Gebrauch.
-const VERSION = 'dolmetscher-v1.1';
+const VERSION = 'dolmetscher-v1.2.1';
 const MODELLE = 'dolmetscher-modelle';
 const LIB = 'dolmetscher-lib'; // Rechenkerne – bleiben bei App-Updates erhalten
 const SHELL = ['./', 'index.html', 'css/app.css', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-180.png',
-  'js/main.js', 'js/langs.js', 'js/store.js', 'js/engine.js', 'js/engine-worker.js', 'js/llm.js', 'js/tts.js', 'js/ocr.js', 'js/rec.js', 'js/phrases.js', 'js/offline.js'];
+  'js/main.js', 'js/langs.js', 'js/store.js', 'js/engine.js', 'js/engine-worker.js', 'js/llm.js', 'js/tts.js', 'js/ocr.js', 'js/rec.js', 'js/phrases.js', 'js/offline.js', 'js/pdf.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));

@@ -22,6 +22,7 @@ try:
         page = ctx.new_page()
         errs = []
         page.on('pageerror', lambda e: errs.append(str(e)))
+        page.on('console', lambda m: m.type in ('warning','error') and 'Stimme' in m.text and print('KONSOLE', m.text[:300]))
         page.on('requestfailed', lambda r: print('REQFAIL', r.url[-80:], r.failure))
         page.on('console', lambda m: m.type == 'error' and errs.append(m.text))
         page.goto(URL); page.wait_for_timeout(1500)
@@ -37,10 +38,8 @@ try:
         # Piper-Stimme erzeugen und gleich als Spracheingabe für Whisper nehmen
         t0 = time.time()
         res = page.evaluate("""async () => {
-          const P = await import('./lib/piper/piper-entry.js');
-          const base = new URL('./lib/piper/', location.href).href;
-          const s = await P.TtsSession.create({ voiceId: 'de_DE-thorsten-medium', wasmPaths: { onnxWasm: base+'ort/', piperData: base+'piper_phonemize.data', piperWasm: base+'piper_phonemize.wasm' } });
-          const wav = await s.predict('Ich brauche dringend einen Arzt.');
+          const t = await import('./js/tts.js');
+          const wav = await t.synth('Ich brauche dringend einen Arzt.', 'de');
           const ctx = new AudioContext(); const buf = await ctx.decodeAudioData(await wav.arrayBuffer());
           const rec = await import('./js/rec.js'); const a = rec.resample(buf.getChannelData(0), buf.sampleRate, 16000);
           const e = await import('./js/engine.js');

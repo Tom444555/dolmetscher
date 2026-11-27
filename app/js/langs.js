@@ -46,10 +46,15 @@ const DIRECT = new Set(('de-en de-es de-fr en-de en-es en-fr en-it en-nl en-ru e
 
 const ID = pair => 'Xenova/opus-mt-' + pair;
 
+// Großes Mehrsprachen-Modell (optional, ca. 900 MB, eher für den Mac): kann jede Richtung direkt.
+export const NLLB = { id: 'Xenova/nllb-200-distilled-600M', mb: 900 };
+export const NLLB_CODES = {"de": "deu_Latn", "en": "eng_Latn", "fr": "fra_Latn", "es": "spa_Latn", "it": "ita_Latn", "nl": "nld_Latn", "pt": "por_Latn", "pl": "pol_Latn", "tr": "tur_Latn", "ru": "rus_Cyrl", "uk": "ukr_Cyrl", "ro": "ron_Latn", "hr": "hrv_Latn", "sr": "srp_Cyrl", "bs": "bos_Latn", "sq": "als_Latn", "bg": "bul_Cyrl", "el": "ell_Grek", "cs": "ces_Latn", "hu": "hun_Latn", "sv": "swe_Latn", "da": "dan_Latn", "fi": "fin_Latn", "ar": "arb_Arab", "fa": "pes_Arab", "he": "heb_Hebr", "hi": "hin_Deva", "zh": "zho_Hans", "ja": "jpn_Jpan", "ko": "kor_Hang", "vi": "vie_Latn", "th": "tha_Thai", "id": "ind_Latn"};
+
 // Liefert die Schritte (Modelle) für eine Richtung. Gibt es kein direktes Modell,
 // geht es über Englisch als Zwischensprache. null = Richtung nicht möglich.
-export function route(src, tgt) {
+export function route(src, tgt, { nllb = false } = {}) {
   if (src === tgt) return [];
+  if (nllb) return [{ model: NLLB.id, nllb: { src: NLLB_CODES[src], tgt: NLLB_CODES[tgt] } }];
   if (DIRECT.has(`${src}-${tgt}`)) return [{ model: ID(`${src}-${tgt}`) }];
   const toEn = src === 'en' ? [] : DIRECT.has(`${src}-en`) ? [{ model: ID(`${src}-en`) }] : [{ model: ID('mul-en') }];
   let fromEn;
@@ -75,3 +80,48 @@ export const WHISPER_MODELS = {
 
 export const TESS_BASE = 'https://tessdata.projectnaptha.com/4.0.0_fast';
 export const PIPER_BASE = 'https://huggingface.co/diffusionstudio/piper-voices/resolve/main';
+
+// Welche von zwei Sprachen ist das? (für „Gespräch mit einem Knopf“)
+// Erst nach Schrift (Kyrillisch, Arabisch …), dann nach typischen kurzen Wörtern.
+const SCRIPT = { ru: /[\u0400-\u04FF]/, uk: /[\u0400-\u04FF]/, bg: /[\u0400-\u04FF]/, sr: /[\u0400-\u04FF]/, el: /[\u0370-\u03FF]/,
+  ar: /[\u0600-\u06FF]/, fa: /[\u0600-\u06FF]/, he: /[\u0590-\u05FF]/, hi: /[\u0900-\u097F]/, th: /[\u0E00-\u0E7F]/,
+  zh: /[\u4E00-\u9FFF]/, ja: /[\u3040-\u30FF\u4E00-\u9FFF]/, ko: /[\uAC00-\uD7AF]/ };
+const WORDS = {
+  de: 'der die das und ist ich nicht sie es ein eine zu mit auf wir ja nein bitte danke wo was wie haben sind auch noch mal',
+  en: 'the and is are you i it to of a in that not yes no please thank what where how have this we can do',
+  fr: 'le la les et est je vous il elle pas un une de des que oui non merci où quoi comment avec pour nous',
+  es: 'el la los las y es yo usted no un una de que sí gracias dónde qué cómo con para por está muy',
+  it: 'il la le e è io lei non un una di che sì grazie dove cosa come con per sono molto',
+  nl: 'de het een en is ik je niet wat waar hoe met voor ja nee dank zijn van op',
+  pt: 'o a os as e é eu você não um uma de que sim obrigado onde como com para está muito',
+  pl: 'i w nie to jest się na że z do tak co jak gdzie dziękuję proszę jestem',
+  tr: 've bir bu ne evet hayır teşekkür nerede nasıl için çok ben sen mi var yok',
+  ro: 'și este eu nu un o de că da mulțumesc unde ce cum cu pentru sunt',
+  hr: 'i je u ne da se na što kako gdje hvala molim sam to',
+  bs: 'i je u ne da se na šta kako gdje hvala molim sam to',
+  sr: 'i je u ne da se na šta kako gde hvala molim sam to',
+  sq: 'dhe është unë nuk një të që po jo faleminderit ku si me për',
+  cs: 'a je v ne to se na že jak kde děkuji prosím jsem ano',
+  hu: 'a az és hogy nem van egy igen köszönöm hol mi hogyan vagyok',
+  sv: 'och är jag inte en ett att det ja nej tack var vad hur med för',
+  da: 'og er jeg ikke en et at det ja nej tak hvor hvad hvordan med for',
+  fi: 'ja on minä ei se että kyllä kiitos missä mitä miten kanssa',
+  vi: 'và là tôi không một của có cảm ơn ở đâu gì như thế nào với',
+  id: 'dan adalah saya tidak satu yang ya terima kasih di mana apa bagaimana dengan',
+};
+export function detectScores(text, cands) {
+  const t = ' ' + text.toLowerCase().replace(/[^\p{L}\s']/gu, ' ') + ' ';
+  const score = {};
+  for (const c of cands) {
+    let s = 0;
+    if (SCRIPT[c]) s += SCRIPT[c].test(text) ? 5 : -5;
+    else if (Object.entries(SCRIPT).some(([k, r]) => !cands.includes(k) && r.test(text))) s -= 2;
+    for (const w of (WORDS[c] || '').split(' ')) if (w && t.includes(' ' + w + ' ')) s += 1;
+    score[c] = s;
+  }
+  return score;
+}
+export function detectLang(text, cands) {
+  const score = detectScores(text, cands);
+  return cands.slice().sort((a, b) => score[b] - score[a])[0];
+}
